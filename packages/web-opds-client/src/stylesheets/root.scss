@@ -148,9 +148,9 @@ a {
 
 // override bootstrap
 .navbar-default, .navbar-collapse {
-  background-color: $dark;
+  background-color: white;
   border: none;
-  color: white;
+  color: $dark;
   margin-bottom: 0;
 
   .navbar-nav {

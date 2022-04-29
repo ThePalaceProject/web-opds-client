@@ -1,24 +1,24 @@
 {
-  "name": "opds-web-client-build",
+  "name": "@thepalaceproject/web-opds-client-build",
   "version": "0.0.3",
   "description": "Build scripts for the OPDS web client",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NYPL-Simplified/opds-web-client.git"
+    "url": "https://github.com/ThePalaceProject/web-opds-client.git"
   },
-  "author": "NYPL",
+  "author": "The Palace Project",
   "license": "Apache-2.0",
   "scripts": {
-    "prepublish": "cd packages/opds-web-client && npm install && cd ../server && npm install",
-    "test": "cd packages/opds-web-client && npm test",
+    "prepublish": "cd packages/web-opds-client && npm install && cd ../server && npm install",
+    "test": "cd packages/web-opds-client && npm test",
     "dev-serve": "cd packages/server && npm run dev",
-    "dev-build": "cd packages/opds-web-client && npm run dev",
+    "dev-build": "cd packages/web-opds-client && npm run dev",
     "dev": "npm run dev-build | npm run dev-serve",
     "dev-test-axe": "TEST_AXE=true npm run dev",
-    "prod": "cd packages/opds-web-client && npm run prod && cd ../server && npm run start",
+    "prod": "cd packages/web-opds-client && npm run prod && cd ../server && npm run start",
     "start": "cd packages/server && npm run start",
-    "release": "cd packages/opds-web-client && npm publish",
-    "build-docs": "cd packages/opds-web-client && npm run build-docs"
+    "release": "cd packages/web-opds-client && npm publish",
+    "build-docs": "cd packages/web-opds-client && npm run build-docs"
   },
   "devDependencies": {
     "husky": "^6.0.0",

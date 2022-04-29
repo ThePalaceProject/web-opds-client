@@ -11,7 +11,7 @@ export type ReadOnlineMediaType =
   | typeof AXIS_NOW_WEBPUB_MEDIA_TYPE;
 
 // the source of truth for media types is located at:
-// https://github.com/NYPL-Simplified/server_core/blob/master/model/constants.py
+// https://github.com/ThePalaceProject/server_core/blob/master/model/constants.py
 export type MediaType =
   | "application/epub+zip"
   | "application/kepub+zip"

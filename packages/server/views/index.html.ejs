@@ -12,12 +12,12 @@
     </style>
   </head>
   <body>
-    <div id="opds-web-client"></div>
+    <div id="web-opds-client"></div>
     <% if (process.env.NODE_ENV === "development") { %>
-    <script src="http://localhost:8090/dist/opds-web-client.js"></script>
+    <script src="http://localhost:8090/dist/web-opds-client.js"></script>
     <% } else { %>
-    <script src="/opds-web-client.js"></script>
-    <link href="/opds-web-client.css" rel="stylesheet" />
+    <script src="/web-opds-client.js"></script>
+    <link href="/web-opds-client.css" rel="stylesheet" />
     <% } %>
     <script>
       var title = document.title;
@@ -38,7 +38,7 @@
         epubReaderUrlTemplate: function (epubUrl) {
           return "/reader?url=" + encodeURIComponent(new URL("/pub/" + btoa(epubUrl) + "/manifest.json", window.location.href).href);
         }
-      }, "opds-web-client");
+      }, "web-opds-client");
     </script>
   </body>
 </html>

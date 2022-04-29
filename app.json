@@ -1,5 +1,5 @@
 {
-  "name": "opds-web-client",
+  "name": "web-opds-client",
   "scripts": {},
   "env": {
     "NPM_CONFIG_PRODUCTION": {

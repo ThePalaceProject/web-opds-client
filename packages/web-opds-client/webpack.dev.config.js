@@ -8,7 +8,7 @@ var config = merge(common, {
     app: ["webpack/hot/dev-server", "./src/app.tsx"]
   },
   output: {
-    filename: "opds-web-client.js",
+    filename: "web-opds-client.js",
     publicPath: "http://localhost:8090/dist",
     library: "OPDSWebClient",
     libraryTarget: "umd"

@@ -3,13 +3,13 @@ packages/**/node_modules
 node_modules
 
 # Compiled JS directory
-packages/opds-web-client/lib
+packages/web-opds-client/lib
 
 # Bundled JS
 dist
 
 # TypeScript Docs
-packages/opds-web-client/docs
+packages/web-opds-client/docs
 
 # Temporary files
 *~

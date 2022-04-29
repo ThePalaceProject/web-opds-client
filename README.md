@@ -1,4 +1,4 @@
-# opds-web-client
+# web-opds-client
 
 JavaScript OPDS web client
 
@@ -10,7 +10,7 @@ OPDS Web Client can be run as a standalone app mounted in a DOM element:
 new OPDSWebClient(config, elementId);
 ```
 
-For an example of OPDS Web Client in use as a standalone app, see the [demo server template](https://github.com/NYPL-Simplified/opds-web-client/blob/master/packages/server/views/index.html.ejs) included in this repository.
+For an example of OPDS Web Client in use as a standalone app, see the [demo server template](https://github.com/ThePalaceProject/web-opds-client/blob/master/packages/server/views/index.html.ejs) included in this repository.
 
 _NOTE_: The web reader has been taken out of the demo server template for now as it is causing build issues. If you want to install it locally and use it for testing, uncomment line 17 in `/packages/server/index.js`, and install it in the `/packages/server` directory:
 
@@ -26,9 +26,9 @@ _NOTE_: The web reader has been taken out of the demo server template for now as
 - `bookUrl`: optional initial URL of an OPDS Entry to load. Default: `null`
 - `proxyUrl`: optional local proxy path to which all remote URLs will be posted. Default: `undefined`
 - `pageTitleTemplate(collectionTitle: string, bookTitle: string) => string`: optional function that accepts a collection and book title and returns an HTML page title. Default: `undefined`
-- `authPlugins`: optional list of objects that implement the [`AuthPlugin` interface](http://nypl-simplified.github.io/opds-web-client/interfaces/authplugin.html). Default: [`BasicAuthPlugin`](http://nypl-simplified.github.io/opds-web-client/globals.html#basicauthplugin)
-- `computeBreadcrumbs`: optional function for customizing breadcrumbs. It defaults to `defaultComputeBreadcrumbs` in the [Breadcrumbs](https://github.com/NYPL-Simplified/opds-web-client/blob/master/packages/opds-web-client/src/components/Breadcrumbs.tsx) module, and `hierarchyComputeBreacrumbs` is also available. It should return an array of link objects, each with `url` and `text` properties. Its accepts two arguments:
-  - `collection`: object representing the current collection data (see `CollectionData` in the [interfaces file](https://github.com/NYPL-Simplified/opds-web-client/blob/master/packages/opds-web-client/src/interfaces.ts))
+- `authPlugins`: optional list of objects that implement the [`AuthPlugin` interface](http://ThePalaceProject.github.io/web-opds-client/interfaces/authplugin.html). Default: [`BasicAuthPlugin`](http://ThePalaceProject.github.io/web-opds-client/globals.html#basicauthplugin)
+- `computeBreadcrumbs`: optional function for customizing breadcrumbs. It defaults to `defaultComputeBreadcrumbs` in the [Breadcrumbs](https://github.com/ThePalaceProject/web-opds-client/blob/master/packages/web-opds-client/src/components/Breadcrumbs.tsx) module, and `hierarchyComputeBreacrumbs` is also available. It should return an array of link objects, each with `url` and `text` properties. Its accepts two arguments:
+  - `collection`: object representing the current collection data (see `CollectionData` in the [interfaces file](https://github.com/ThePalaceProject/web-opds-client/blob/master/packages/web-opds-client/src/interfaces.ts))
   - `history`: an array of link objects (each with `url` and `text` properties) that is appended every time the user navigates to a new collection
 - `epubReaderUrlTemplate(epubUrl: string) => string`: optional function that returns a URL where you can read an EPUB file.
 - `allLanguageSearch`: optional string to specify if searches in the catalog should not use the browser's language header in requests. Default: `false`
@@ -38,7 +38,7 @@ _NOTE_: The web reader has been taken out of the demo server template for now as
 The application is also available as a reusable React component:
 
 ```jsx
-import OPDSCatalog from "opds-web-client";
+import OPDSCatalog from "web-opds-client";
 
 ReactDOM.render(
   <OPDSCatalog
@@ -51,7 +51,7 @@ ReactDOM.render(
 );
 ```
 
-For an example of the application in use as a React component, see [NYPL-Simplified/circulation-web](https://github.com/NYPL-Simplified/circulation-web).
+For an example of the application in use as a React component, see [ThePalaceProject/circulation-admin](https://github.com/ThePalaceProject/circulation-admin).
 
 ### React Component Props
 
@@ -73,9 +73,9 @@ The OPDSCatalog React component should be rendered within a [React context](http
 
 ## Accessibility
 
-In order to develop user interfaces that are accessible to everyone, there are tools added to the workflow. Besides the Typescript `tslint-react-a11y` plugin (in `/packages/opds-web-client/tslint.json`), `react-axe` is also installed for local development. Using that module while running the app uses a lot of resources so it should be only when specifically testing for accessibility and not while actively developing new features or fixing bugs.
+In order to develop user interfaces that are accessible to everyone, there are tools added to the workflow. Besides the Typescript `tslint-react-a11y` plugin (in `/packages/web-opds-client/tslint.json`), `react-axe` is also installed for local development. Using that module while running the app uses a lot of resources so it should be only when specifically testing for accessibility and not while actively developing new features or fixing bugs.
 
-In order to run the app with `react-axe`, run `npm run dev-test-axe`. This will add a local global variable `process.env.TEST_AXE` (through webpack) that will trigger `react-axe` in `/packages/opds-web-client/src/app.tsx`. The output will be seen in the _browser's_ console terminal.
+In order to run the app with `react-axe`, run `npm run dev-test-axe`. This will add a local global variable `process.env.TEST_AXE` (through webpack) that will trigger `react-axe` in `/packages/web-opds-client/src/app.tsx`. The output will be seen in the _browser's_ console terminal.
 
 ## License
 

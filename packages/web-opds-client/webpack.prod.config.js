@@ -13,7 +13,7 @@ var config = merge(common, {
   },
   output: {
     path: path.resolve(__dirname, "./dist"),
-    filename: "opds-web-client.js",
+    filename: "web-opds-client.js",
     library: "OPDSWebClient",
     libraryTarget: "umd"
   },
@@ -23,7 +23,7 @@ var config = merge(common, {
     new webpack.IgnorePlugin(/jsdom$/),
 
     // Extract separate css file.
-    new MiniCssExtractPlugin({ filename: "opds-web-client.css" })
+    new MiniCssExtractPlugin({ filename: "web-opds-client.css" })
   ],
   module: {
     rules: [
