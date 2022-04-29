@@ -1,0 +1,36 @@
+name: Publish Release
+
+on:
+  # The build will be triggered when we publish a release
+  release:
+    types: [published]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Install Node.js 💻
+      uses: actions/setup-node@v2
+      with:
+        node-version: 12
+        registry-url: https://registry.npmjs.org/
+
+    - name: Install locked dependencies 🔧
+      run: npm ci
+
+    - name: Version ✅
+      run: npm version --no-git-tag-version ${{ github.event.release.tag_name }}
+
+    - name: Test 🧪
+      env:
+        TZ: America/New_York
+      run: npm test
+
+    - name: Publish 📚
+      run: npm publish --access public
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

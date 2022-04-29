@@ -1,0 +1,33 @@
+name: Deploy Documentation
+on:
+  push:
+    # If we are pushing to a release branch (main or master), then we need
+    # to deploy the documentation to GitHub Pages.
+    branches:
+      - main
+      - master
+
+jobs:
+  gh-pages:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      - name: Install Node.js 💻
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12
+
+      - name: Install 🔧
+        run: npm ci
+
+      - name: Build docs 📃
+        run: npm run build-docs
+
+      - name: Deploy docs to GitHub pages 🚀
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          BRANCH: gh-pages
+          FOLDER: docs
