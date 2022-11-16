@@ -1,6 +1,6 @@
 # web-opds-client
 
-JavaScript OPDS web client
+JavaScript OPDS web client!
 
 ## Standalone App
 
