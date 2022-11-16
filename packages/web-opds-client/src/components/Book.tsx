@@ -19,6 +19,7 @@ export interface BookProps {
   updateBook: (url: string | undefined) => Promise<BookData>;
   isSignedIn?: boolean;
   epubReaderUrlTemplate?: (epubUrl: string) => string;
+  showCirculationLinks?: boolean;
 }
 
 /** Displays a single book for use in a lane, list, or grid view. */
@@ -89,7 +90,9 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
                 </div>
               )}
             </div>
-            <div className="circulation-links">{this.circulationLinks()}</div>
+            {this.props.showCirculationLinks && (
+              <div className="circulation-links">{this.circulationLinks()}</div>
+            )}
           </div>
           <div className="details">
             <div className="fields" lang="en">

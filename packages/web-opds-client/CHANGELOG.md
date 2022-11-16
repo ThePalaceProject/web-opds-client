@@ -1,5 +1,10 @@
 ## Changelog
 
+### v1.0.0
+
+- In the Book component, the circulation links (e.g. Borrow, Download) are no longer rendered by default. There is now a showCirculationLinks prop that must be set to true to render the circulation links.
+- The Collection component now has a showCirculationLinks prop that controls the rendering of circulation links on the Books in the Collection.
+
 ### v0.6.4
 
 - Initial Palace release.

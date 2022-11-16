@@ -103,6 +103,7 @@ describe("Collection", () => {
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
           setPreference={setPreference}
+          showCirculationLinks={false}
         />,
         {
           context,
@@ -129,6 +130,14 @@ describe("Collection", () => {
       expect(books.length).to.equal(collectionData.books.length);
       expect(bookDatas).to.deep.equal(collectionData.books);
       expect(uniqueCollectionUrls).to.deep.equal([collectionData.url]);
+    });
+
+    it("passes showCirculationLinks prop to books", () => {
+      const books = wrapper.find(Book);
+
+      books.forEach(book =>
+        expect(book.props().showCirculationLinks).to.equal(false)
+      );
     });
 
     it("shows grid or list view", () => {

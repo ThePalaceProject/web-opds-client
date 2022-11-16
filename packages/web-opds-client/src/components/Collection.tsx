@@ -12,6 +12,7 @@ export interface CollectionProps extends React.HTMLProps<Collection> {
   isFetchingCollection?: boolean;
   isFetchingBook?: boolean;
   isFetchingPage?: boolean;
+  showCirculationLinks?: boolean;
   error?: FetchErrorData;
   fetchPage?: (url: string) => Promise<any>;
   updateBook: (url: string) => Promise<BookData>;
@@ -111,6 +112,7 @@ export default class Collection extends React.Component<CollectionProps, {}> {
                       updateBook={this.props.updateBook}
                       isSignedIn={this.props.isSignedIn}
                       epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
+                      showCirculationLinks={this.props.showCirculationLinks}
                     />
                   </li>
                 ))}

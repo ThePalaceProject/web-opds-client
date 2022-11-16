@@ -128,6 +128,7 @@ describe("Book", () => {
           book={book}
           updateBook={updateBook}
           epubReaderUrlTemplate={epubReaderUrlTemplate}
+          showCirculationLinks={true}
         />
       );
     });
@@ -227,104 +228,158 @@ describe("Book", () => {
       expect(moreLink.html()).to.contain("More");
     });
 
-    it("shows download button for open access urls", () => {
-      let buttons = wrapper.find(DownloadButton);
-      expect(buttons.length).to.equal(2);
-      let epubButton = buttons.at(0);
-      let mobiButton = buttons.at(1);
+    context("when showCirculationLinks is true", () => {
+      it("shows download button for open access urls", () => {
+        let buttons = wrapper.find(DownloadButton);
+        expect(buttons.length).to.equal(2);
+        let epubButton = buttons.at(0);
+        let mobiButton = buttons.at(1);
 
-      expect(epubButton.props().link.url).to.equal("secrets.epub");
-      expect(epubButton.props().link.type).to.equal("application/epub+zip");
-      expect(epubButton.props().isPlainLink).to.equal(true);
+        expect(epubButton.props().link.url).to.equal("secrets.epub");
+        expect(epubButton.props().link.type).to.equal("application/epub+zip");
+        expect(epubButton.props().isPlainLink).to.equal(true);
 
-      expect(mobiButton.props().link.url).to.equal("secrets.mobi");
-      expect(mobiButton.props().link.type).to.equal(
-        "application/x-mobipocket-ebook"
-      );
-      expect(mobiButton.props().isPlainLink).to.equal(true);
+        expect(mobiButton.props().link.url).to.equal("secrets.mobi");
+        expect(mobiButton.props().link.type).to.equal(
+          "application/x-mobipocket-ebook"
+        );
+        expect(mobiButton.props().isPlainLink).to.equal(true);
+      });
+
+      it("shows read button for open access epub urls", () => {
+        let buttons = wrapper.find(".read-button");
+        expect(buttons.length).to.equal(1);
+        expect(buttons.props().href).to.equal("test reader url");
+      });
+
+      it("shows borrow/hold button", () => {
+        let bookCopy = Object.assign({}, book, {
+          borrowUrl: "borrow url"
+        });
+        let updateBook = stub();
+        wrapper = shallow(
+          <Book
+            book={bookCopy}
+            updateBook={updateBook}
+            showCirculationLinks={true}
+          />
+        );
+
+        let button = wrapper.find(BorrowButton);
+        expect(button.children().text()).to.equal("Borrow");
+        button.props().borrow();
+        expect(updateBook.callCount).to.equal(1);
+        expect(updateBook.args[0][0]).to.equal(bookCopy.borrowUrl);
+        wrapper.setProps({
+          book: Object.assign({}, bookCopy, {
+            copies: { total: 2, available: 0 }
+          })
+        });
+        button = wrapper.find(BorrowButton);
+        expect(button.children().text()).to.equal("Reserve");
+      });
+
+      it("shows fulfill button if there's no download button", () => {
+        let link = {
+          url: "fulfillment url",
+          type: "application/vnd.adobe.adept+xml"
+        };
+        let bookCopy = Object.assign({}, book, {
+          openAccessLinks: [],
+          fulfillmentLinks: [link]
+        });
+        wrapper = shallow(
+          <Book
+            book={bookCopy}
+            updateBook={stub()}
+            isSignedIn={false}
+            showCirculationLinks={true}
+          />
+        );
+        let button = wrapper.find(DownloadButton);
+        expect(button.props().link.url).to.equal(link.url);
+        expect(button.props().title).to.equal(bookCopy.title);
+        expect(button.props().link.type).to.equal(link.type);
+        expect(button.props().isPlainLink).to.equal(true);
+      });
+
+      it("shows 'borrowed'", () => {
+        let link = {
+          url: "fulfillment url",
+          type: "application/vnd.adobe.adept+xml"
+        };
+        let bookCopy = Object.assign({}, book, {
+          openAccessLinks: [],
+          fulfillmentLinks: [link]
+        });
+        wrapper = shallow(
+          <Book
+            book={bookCopy}
+            updateBook={stub()}
+            showCirculationLinks={true}
+          />
+        );
+        let button = wrapper.find(BorrowButton);
+        expect(button.props().children).to.equal("Borrowed");
+        expect(button.props().disabled).to.equal(true);
+      });
+
+      it("shows 'reserved'", () => {
+        let bookCopy = Object.assign({}, book, {
+          openAccessLinks: [],
+          availability: { status: "reserved" }
+        });
+        wrapper = shallow(
+          <Book
+            book={bookCopy}
+            updateBook={stub()}
+            showCirculationLinks={true}
+          />
+        );
+        let button = wrapper.find("button");
+        expect(button.text()).to.equal("Reserved");
+        expect(button.props().className).to.contain("disabled");
+      });
+
+      it("shows 'borrow' when a reserved book becomes available", () => {
+        let bookCopy = Object.assign({}, book, {
+          openAccessLinks: [],
+          availability: { status: "ready" }
+        });
+        wrapper = shallow(
+          <Book
+            book={bookCopy}
+            updateBook={stub()}
+            showCirculationLinks={true}
+          />
+        );
+        let button = wrapper.find(BorrowButton);
+        expect(button.length).to.equal(1);
+        expect(button.html()).to.contain("Borrow");
+      });
     });
 
-    it("shows read button for open access epub urls", () => {
-      let buttons = wrapper.find(".read-button");
-      expect(buttons.length).to.equal(1);
-      expect(buttons.props().href).to.equal("test reader url");
-    });
+    context("when showCirculationLinks is false", () => {
+      it("does not show borrow/hold button", () => {
+        const bookCopy = {
+          ...book,
+          borrowUrl: "borrow url"
+        };
 
-    it("shows borrow/hold button", () => {
-      let bookCopy = Object.assign({}, book, {
-        borrowUrl: "borrow url"
-      });
-      let updateBook = stub();
-      wrapper = shallow(<Book book={bookCopy} updateBook={updateBook} />);
+        const updateBook = stub();
 
-      let button = wrapper.find(BorrowButton);
-      expect(button.children().text()).to.equal("Borrow");
-      button.props().borrow();
-      expect(updateBook.callCount).to.equal(1);
-      expect(updateBook.args[0][0]).to.equal(bookCopy.borrowUrl);
-      wrapper.setProps({
-        book: Object.assign({}, bookCopy, {
-          copies: { total: 2, available: 0 }
-        })
-      });
-      button = wrapper.find(BorrowButton);
-      expect(button.children().text()).to.equal("Reserve");
-    });
+        wrapper = shallow(
+          <Book
+            book={bookCopy}
+            updateBook={updateBook}
+            showCirculationLinks={false}
+          />
+        );
 
-    it("shows fulfill button if there's no download button", () => {
-      let link = {
-        url: "fulfillment url",
-        type: "application/vnd.adobe.adept+xml"
-      };
-      let bookCopy = Object.assign({}, book, {
-        openAccessLinks: [],
-        fulfillmentLinks: [link]
-      });
-      wrapper = shallow(
-        <Book book={bookCopy} updateBook={stub()} isSignedIn={false} />
-      );
-      let button = wrapper.find(DownloadButton);
-      expect(button.props().link.url).to.equal(link.url);
-      expect(button.props().title).to.equal(bookCopy.title);
-      expect(button.props().link.type).to.equal(link.type);
-      expect(button.props().isPlainLink).to.equal(true);
-    });
+        const button = wrapper.find(BorrowButton);
 
-    it("shows 'borrowed'", () => {
-      let link = {
-        url: "fulfillment url",
-        type: "application/vnd.adobe.adept+xml"
-      };
-      let bookCopy = Object.assign({}, book, {
-        openAccessLinks: [],
-        fulfillmentLinks: [link]
+        expect(button.length).to.equal(0);
       });
-      wrapper = shallow(<Book book={bookCopy} updateBook={stub()} />);
-      let button = wrapper.find(BorrowButton);
-      expect(button.props().children).to.equal("Borrowed");
-      expect(button.props().disabled).to.equal(true);
-    });
-
-    it("shows 'reserved'", () => {
-      let bookCopy = Object.assign({}, book, {
-        openAccessLinks: [],
-        availability: { status: "reserved" }
-      });
-      wrapper = shallow(<Book book={bookCopy} updateBook={stub()} />);
-      let button = wrapper.find("button");
-      expect(button.text()).to.equal("Reserved");
-      expect(button.props().className).to.contain("disabled");
-    });
-
-    it("shows 'borrow' when a reserved book becomes available", () => {
-      let bookCopy = Object.assign({}, book, {
-        openAccessLinks: [],
-        availability: { status: "ready" }
-      });
-      wrapper = shallow(<Book book={bookCopy} updateBook={stub()} />);
-      let button = wrapper.find(BorrowButton);
-      expect(button.length).to.equal(1);
-      expect(button.html()).to.contain("Borrow");
     });
   });
 });
