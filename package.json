@@ -17,7 +17,7 @@
     "dev-test-axe": "TEST_AXE=true npm run dev",
     "prod": "cd packages/web-opds-client && npm run prod && cd ../server && npm run start",
     "start": "cd packages/server && npm run start",
-    "release": "cd packages/web-opds-client && npm publish",
+    "release": "cd packages/web-opds-client && npm publish --access public",
     "build-docs": "cd packages/web-opds-client && npm run build-docs"
   },
   "devDependencies": {
