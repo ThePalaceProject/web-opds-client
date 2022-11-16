@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.6.4
+
+- Initial Palace release.
+
 ### v0.6.3
 
 - Removed console.logs and other comments from previous version following successful testing.
