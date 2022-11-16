@@ -23,7 +23,7 @@ jobs:
       run: npm ci
 
     - name: Version ✅
-      run: npm version --no-git-tag-version ${{ github.event.release.tag_name }}
+      run: cd packages/web-opds-client && npm version --no-git-tag-version ${{ github.event.release.tag_name }}
 
     - name: Test 🧪
       env:
