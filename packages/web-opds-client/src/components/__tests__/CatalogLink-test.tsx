@@ -4,7 +4,7 @@ import * as React from "react";
 import { shallow } from "enzyme";
 
 import CatalogLink from "../CatalogLink";
-import { Link } from "react-router";
+import { Link, LinkProps } from "react-router";
 import { mockRouterContext } from "../../__mocks__/routing";
 
 describe("CatalogLink", () => {
@@ -18,7 +18,7 @@ describe("CatalogLink", () => {
     };
     let context = mockRouterContext();
     let location = context.pathFor(props.collectionUrl, props.bookUrl);
-    let linkProps = Object.assign({}, Link.defaultProps, props, {
+    let linkProps: Partial<LinkProps> = Object.assign({}, Link.defaultProps, props, {
       to: location
     });
     delete linkProps["collectionUrl"];
