@@ -21,11 +21,11 @@ global["document"] = window.document;
 global["navigator"] = {
   userAgent: "node.js"
 } as Navigator;
-global["requestAnimationFrame"] = function(callback) {
+global["requestAnimationFrame"] = function (callback) {
   setTimeout(callback, 0);
   return 0;
 };
-global["cancelAnimationFrame"] = function(id) {
+global["cancelAnimationFrame"] = function (id) {
   clearTimeout(id);
 };
 copyProps(window, global);

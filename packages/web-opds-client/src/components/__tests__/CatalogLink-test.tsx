@@ -18,9 +18,12 @@ describe("CatalogLink", () => {
     };
     let context = mockRouterContext();
     let location = context.pathFor(props.collectionUrl, props.bookUrl);
-    let linkProps: Partial<LinkProps> = Object.assign({}, Link.defaultProps, props, {
-      to: location
-    });
+    let linkProps: Partial<LinkProps> = Object.assign(
+      {},
+      Link.defaultProps,
+      props,
+      { to: location }
+    );
     delete linkProps["collectionUrl"];
     delete linkProps["bookUrl"];
     let requiredRouterKeys = [
