@@ -1,4 +1,5 @@
-const merge = require("webpack-merge");
+const path = require("path");
+const { merge } = require("webpack-merge");
 const common = require("./webpack.common.js");
 
 var config = merge(common, {
@@ -17,14 +18,22 @@ var config = merge(common, {
     rules: [
       {
         test: /\.scss$/,
-        loaders: ["style-loader", "css-loader", "sass-loader"]
+        use: ["style-loader", "css-loader", "sass-loader"]
       },
       {
         test: /\.tsx?$/,
         exclude: [/node_modules/],
-        loaders: ["react-hot-loader/webpack", "ts-loader"]
+        use: ["react-hot-loader/webpack", "ts-loader"]
       }
     ]
+  },
+  devServer: {
+    historyApiFallback: true,
+    hot: true,
+    port: 8090,
+    static: {
+      directory: path.resolve(__dirname, "build")
+    }
   }
 });
 
