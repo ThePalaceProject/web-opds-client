@@ -4,7 +4,7 @@ import DataFetcher from "../../DataFetcher";
 import ActionsCreator from "../../actions";
 
 // The main context for this app's Actions.
-type ActionsContextType =
+export type ActionsContextType =
   | { fetcher: DataFetcher; actions: ActionsCreator }
   | undefined;
 

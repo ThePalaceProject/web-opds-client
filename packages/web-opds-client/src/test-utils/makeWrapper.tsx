@@ -13,7 +13,7 @@ import buildStore from "../store";
 import BasicAuthPlugin from "../BasicAuthPlugin";
 import * as Redux from "redux";
 
-type WrapperConfig = {
+export type WrapperConfig = {
   pathFor?: PathFor;
   proxyUrl?: string;
   initialState?: State;

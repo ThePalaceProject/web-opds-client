@@ -15,7 +15,7 @@ export const RouterContext = React.createContext<RouterType | undefined>(
   undefined
 );
 
-type RouterContextProps = {
+export type RouterContextProps = {
   router: RouterType;
 };
 
