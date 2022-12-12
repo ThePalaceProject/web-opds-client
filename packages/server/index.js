@@ -6,14 +6,14 @@ var port = process.env.PORT || 3000;
 var multer = require("multer");
 var form = multer();
 
-var serverManifestJson = require("r2-streamer-js/dist/src/server-manifestjson")
+var serverManifestJson = require("r2-streamer-js/dist/es8-es2017/src/http/server-manifestjson")
   .serverManifestJson;
-var serverMediaOverlays = require("r2-streamer-js/dist/src/server-mediaoverlays")
+var serverMediaOverlays = require("r2-streamer-js/dist/es8-es2017/src/http/server-mediaoverlays")
   .serverMediaOverlays;
-var serverPub = require("r2-streamer-js/dist/src/server-pub").serverPub;
-var serverAssets = require("r2-streamer-js/dist/src/server-assets")
+var serverPub = require("r2-streamer-js/dist/es8-es2017/src/http/server-pub").serverPub;
+var serverAssets = require("r2-streamer-js/dist/es8-es2017/src/http/server-assets")
   .serverAssets;
-var Server = require("r2-streamer-js/dist/src/server").Server;
+var Server = require("r2-streamer-js/dist/es8-es2017/src/http/server").Server;
 
 app.use(express.static(__dirname + "/../web-opds-client/dist"));
 // Uncomment to enable the webreader when `nypl-simplified-webpub-viewer` is installed.
