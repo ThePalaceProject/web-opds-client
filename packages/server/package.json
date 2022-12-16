@@ -9,6 +9,10 @@
   "main": "index.js",
   "author": "NYPL",
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
     "dev": "NODE_ENV=development node index.js",
     "start": "NODE_ENV=production node index.js"

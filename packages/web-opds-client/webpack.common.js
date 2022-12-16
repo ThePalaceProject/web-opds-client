@@ -26,10 +26,10 @@ module.exports = {
   resolve: {
     extensions: [".js", ".ts", ".tsx", ".scss"],
     fallback: {
-      "buffer": require.resolve("buffer/"),
-      "stream": require.resolve("stream-browserify"),
-      "timers": require.resolve("timers-browserify"),
-      "url": require.resolve("url/")
+      buffer: require.resolve("buffer"),
+      stream: require.resolve("stream-browserify"),
+      timers: require.resolve("timers-browserify"),
+      url: require.resolve("url")
     }
   }
 };
