@@ -1,5 +1,9 @@
 ## Changelog
 
+### v1.0.1
+
+- Upgrade dependencies to support Node 18.
+
 ### v1.0.0
 
 - In the Book component, the circulation links (e.g. Borrow, Download) are no longer rendered by default. There is now a showCirculationLinks prop that must be set to true to render the circulation links.
@@ -12,9 +16,11 @@
 ### v0.6.3
 
 - Removed console.logs and other comments from previous version following successful testing.
+
 ### v0.6.3-test
 
 - The resolve function in OPDSDataAdapter is causing bugs in the List Manager of CM Admin. This version removes the function in order to test it.
+
 ### v0.6.2
 
 - Updated class `.collection .collection-container` to give more space to the bottom.
@@ -22,9 +28,11 @@
 ### v0.6.1
 
 - Updated npm packages to fix security issues.
+
 ### v0.6.0
 
 - Updated npm packages to fix security issues.
+
 ### v0.5.7
 
 - Add a button labeled "LCP License" to the UI and allow patrons to download LCP licenses as .lcpl files.

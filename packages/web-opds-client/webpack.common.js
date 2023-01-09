@@ -7,7 +7,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     // jsdom is needed for server rendering, but causes errors
     // in the browser even if it is never used, so we ignore it:
-    new webpack.IgnorePlugin(/jsdom$/),
+    new webpack.IgnorePlugin({ resourceRegExp: /jsdom$/ }),
     // Set a local global variable in the app that will be used only
     // for testing AXE in development mode.
     new webpack.DefinePlugin({
@@ -19,11 +19,17 @@ module.exports = {
     rules: [
       {
         test: /\.(ttf|woff|eot|svg|png|woff2|gif|jpg)(\?[\s\S]+)?$/,
-        loader: "url-loader?limit=100000"
+        use: ["url-loader?limit=100000"]
       }
     ]
   },
   resolve: {
-    extensions: [".js", ".ts", ".tsx", ".scss"]
+    extensions: [".js", ".ts", ".tsx", ".scss"],
+    fallback: {
+      buffer: require.resolve("buffer"),
+      stream: require.resolve("stream-browserify"),
+      timers: require.resolve("timers-browserify"),
+      url: require.resolve("url")
+    }
   }
 };

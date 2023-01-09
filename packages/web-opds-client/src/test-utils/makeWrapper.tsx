@@ -13,7 +13,7 @@ import buildStore from "../store";
 import BasicAuthPlugin from "../BasicAuthPlugin";
 import * as Redux from "redux";
 
-type WrapperConfig = {
+export type WrapperConfig = {
   pathFor?: PathFor;
   proxyUrl?: string;
   initialState?: State;
@@ -28,9 +28,7 @@ const defaultPathFor = fake((collectionUrl?: string, bookUrl?: string) =>
  * This creates a wrapper component, and returns some global context
  * which can be used to spy / mock actions, fetcher, etc
  */
-type MakeWrapper = (
-  config?: WrapperConfig
-) => {
+type MakeWrapper = (config?: WrapperConfig) => {
   wrapper: React.FC;
   actions: ActionsCreator;
   fetcher: DataFetcher;

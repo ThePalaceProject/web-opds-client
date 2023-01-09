@@ -74,7 +74,10 @@ export function shorten(history: LinkData[], newUrl: string) {
     return history;
   }
 }
-type CollectionWithRootLink = RequiredKeys<CollectionData, "catalogRootLink">;
+export type CollectionWithRootLink = RequiredKeys<
+  CollectionData,
+  "catalogRootLink"
+>;
 
 export function shouldAddRoot(
   newCollection: CollectionData

@@ -11,7 +11,7 @@ export const PathForContext = React.createContext<PathFor | undefined>(
   undefined
 );
 
-type PathForProps = {
+export type PathForProps = {
   pathFor: PathFor;
   children: React.ReactChild;
 };

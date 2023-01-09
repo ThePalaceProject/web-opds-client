@@ -27,7 +27,7 @@ function isReadOnlineLink(
   );
 }
 
-type DownloadDetails = {
+export type DownloadDetails = {
   fulfill: () => Promise<void>;
   downloadLabel: string;
   mimeType: MediaType;

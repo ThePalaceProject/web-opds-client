@@ -8,6 +8,10 @@
   },
   "author": "The Palace Project",
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
     "prepublish": "cd packages/web-opds-client && npm install && cd ../server && npm install",
     "test": "cd packages/web-opds-client && npm test",
@@ -21,9 +25,9 @@
     "build-docs": "cd packages/web-opds-client && npm run build-docs"
   },
   "devDependencies": {
-    "husky": "^6.0.0",
-    "lint-staged": "^9.4.3",
-    "prettier": "1.19.1"
+    "husky": "^4.3.0",
+    "lint-staged": "^10.4.0",
+    "prettier": "2.1.2"
   },
   "husky": {
     "hooks": {
@@ -32,8 +36,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,md}": [
-      "prettier --write --ignore-path .gitignore",
-      "git add"
+      "prettier --write --ignore-path .gitignore"
     ]
   },
   "prettier": {

@@ -9,15 +9,19 @@
   "main": "index.js",
   "author": "NYPL",
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
     "dev": "NODE_ENV=development node index.js",
     "start": "NODE_ENV=production node index.js"
   },
   "dependencies": {
-    "ejs": "^2.4.1",
+    "ejs": "^3.1.8",
     "express": "^4.13.4",
-    "multer": "^1.1.0",
-    "r2-streamer-js": "0.0.1-alpha13",
+    "multer": "^1.4.5-lts.1",
+    "r2-streamer-js": "^1.0.44",
     "request": "^2.69.0",
     "requirejs": "^2.3.2"
   }
