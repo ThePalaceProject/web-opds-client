@@ -1,10 +1,10 @@
 {
-  "name": "@thepalaceproject/web-opds-client-build",
-  "version": "0.0.3",
+  "name": "@natlibfi/ekirjasto-web-opds-client-build",
+  "version": "0.0.1",
   "description": "Build scripts for the OPDS web client",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ThePalaceProject/web-opds-client.git"
+    "url": "https://github.com/NatLibFi/ekirjasto-web-opds-client.git"
   },
   "author": "The Palace Project",
   "license": "Apache-2.0",

@@ -16,3 +16,6 @@ packages/web-opds-client/docs
 
 # Local editor files
 .vscode
+
+# Misc
+.DS_Store

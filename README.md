@@ -1,6 +1,7 @@
 # web-opds-client
 
-JavaScript OPDS web client
+This is the E-kirjasto fork of the [The Palace Project](https://thepalaceproject.org) JavaScript OPDS web client (which is a fork of
+[Library Simplified](http://www.librarysimplified.org/) JavaScript OPDS web client) used in [E-kirjasto Circulation Manager Administrative Interface](https://github.com/NatLibFi/ekirjasto-circulation-admin).
 
 ## Standalone App
 
@@ -10,7 +11,7 @@ OPDS Web Client can be run as a standalone app mounted in a DOM element:
 new OPDSWebClient(config, elementId);
 ```
 
-For an example of OPDS Web Client in use as a standalone app, see the [demo server template](https://github.com/ThePalaceProject/web-opds-client/blob/master/packages/server/views/index.html.ejs) included in this repository.
+For an example of OPDS Web Client in use as a standalone app, see the [demo server template](https://github.com/NatLibFi/ekirjasto-web-opds-client/blob/master/packages/server/views/index.html.ejs) included in this repository.
 
 _NOTE_: The web reader has been taken out of the demo server template for now as it is causing build issues. If you want to install it locally and use it for testing, uncomment line 17 in `/packages/server/index.js`, and install it in the `/packages/server` directory:
 
@@ -27,8 +28,8 @@ _NOTE_: The web reader has been taken out of the demo server template for now as
 - `proxyUrl`: optional local proxy path to which all remote URLs will be posted. Default: `undefined`
 - `pageTitleTemplate(collectionTitle: string, bookTitle: string) => string`: optional function that accepts a collection and book title and returns an HTML page title. Default: `undefined`
 - `authPlugins`: optional list of objects that implement the [`AuthPlugin` interface](http://ThePalaceProject.github.io/web-opds-client/interfaces/authplugin.html). Default: [`BasicAuthPlugin`](http://ThePalaceProject.github.io/web-opds-client/globals.html#basicauthplugin)
-- `computeBreadcrumbs`: optional function for customizing breadcrumbs. It defaults to `defaultComputeBreadcrumbs` in the [Breadcrumbs](https://github.com/ThePalaceProject/web-opds-client/blob/master/packages/web-opds-client/src/components/Breadcrumbs.tsx) module, and `hierarchyComputeBreacrumbs` is also available. It should return an array of link objects, each with `url` and `text` properties. Its accepts two arguments:
-  - `collection`: object representing the current collection data (see `CollectionData` in the [interfaces file](https://github.com/ThePalaceProject/web-opds-client/blob/master/packages/web-opds-client/src/interfaces.ts))
+- `computeBreadcrumbs`: optional function for customizing breadcrumbs. It defaults to `defaultComputeBreadcrumbs` in the [Breadcrumbs](https://github.com/NatLibFi/ekirjasto-web-opds-client/blob/master/packages/web-opds-client/src/components/Breadcrumbs.tsx) module, and `hierarchyComputeBreacrumbs` is also available. It should return an array of link objects, each with `url` and `text` properties. Its accepts two arguments:
+  - `collection`: object representing the current collection data (see `CollectionData` in the [interfaces file](https://github.com/NatLibFi/ekirjasto-web-opds-client/blob/master/packages/web-opds-client/src/interfaces.ts))
   - `history`: an array of link objects (each with `url` and `text` properties) that is appended every time the user navigates to a new collection
 - `epubReaderUrlTemplate(epubUrl: string) => string`: optional function that returns a URL where you can read an EPUB file.
 - `allLanguageSearch`: optional string to specify if searches in the catalog should not use the browser's language header in requests. Default: `false`

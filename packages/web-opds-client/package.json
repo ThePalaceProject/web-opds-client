@@ -1,11 +1,11 @@
 {
-  "name": "@thepalaceproject/web-opds-client",
+  "name": "@natlibfi/ekirjasto-web-opds-client",
   "description": "OPDS web client",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ThePalaceProject/web-opds-client.git"
+    "url": "https://github.com/NatLibFi/ekirjasto-web-opds-client.git"
   },
   "author": "NYPL",
   "license": "Apache-2.0",
