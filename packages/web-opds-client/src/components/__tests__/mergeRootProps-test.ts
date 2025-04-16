@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { stub, spy } from "sinon";
 
 import ActionCreator from "../../actions";
+import DataFetcher from "../../DataFetcher";
 
 // synchronous actions for simple testing
 // of createFetchCollectionAndBook
@@ -113,6 +114,82 @@ describe("mergeRootProps", () => {
     title: "fake book title",
     url: "fake book url"
   };
+
+  it("uses custom DataFetcher if provided in componentProps", () => {
+    const customFetcher = new DataFetcher();
+
+    // We'll use a regular function stub that we can inspect
+    const createDispatchPropsSpy = stub();
+    createDispatchPropsSpy.returns({
+      fetchCollection: stub().returns(Promise.resolve({})),
+      clearCollection: stub(),
+      loadBook: stub(),
+      fetchBook: stub().returns(Promise.resolve({})),
+      clearBook: stub(),
+      updateBook: stub().returns(Promise.resolve({})),
+      fetchLoans: stub().returns(Promise.resolve({}))
+    });
+
+    const dispatchProps = {
+      createDispatchProps: createDispatchPropsSpy
+    };
+
+    const componentProps = {
+      fetcher: customFetcher
+    };
+
+    const stateProps = {
+      loadedCollectionUrl: null,
+      loadedBookUrl: null,
+      collectionUrl: null,
+      bookUrl: null,
+      loansUrl: null,
+      auth: { credentials: null }
+    };
+
+    mergeRootProps(stateProps, dispatchProps, componentProps);
+
+    expect(createDispatchPropsSpy.calledOnce).to.be.true;
+    expect(createDispatchPropsSpy.firstCall.args[0]).to.equal(customFetcher);
+  });
+
+  it("creates new DataFetcher if not provided in componentProps", () => {
+    // We'll use a regular function stub that we can inspect
+    const createDispatchPropsSpy = stub();
+    createDispatchPropsSpy.returns({
+      fetchCollection: stub().returns(Promise.resolve({})),
+      clearCollection: stub(),
+      loadBook: stub(),
+      fetchBook: stub().returns(Promise.resolve({})),
+      clearBook: stub(),
+      updateBook: stub().returns(Promise.resolve({})),
+      fetchLoans: stub().returns(Promise.resolve({}))
+    });
+
+    const dispatchProps = {
+      createDispatchProps: createDispatchPropsSpy
+    };
+
+    const componentProps = {
+      proxyUrl: "test-proxy-url"
+    };
+
+    const stateProps = {
+      loadedCollectionUrl: null,
+      loadedBookUrl: null,
+      collectionUrl: null,
+      bookUrl: null,
+      loansUrl: null,
+      auth: { credentials: null }
+    };
+
+    mergeRootProps(stateProps, dispatchProps, componentProps);
+
+    expect(createDispatchPropsSpy.calledOnce).to.be.true;
+
+    const passedFetcher = createDispatchPropsSpy.firstCall.args[0];
+    expect(passedFetcher).to.be.an.instanceof(DataFetcher);
+  });
 
   beforeEach(() => {
     fetchCollection = spy(url => {

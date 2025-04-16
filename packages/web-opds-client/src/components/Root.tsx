@@ -35,6 +35,7 @@ import {
 } from "../interfaces";
 import AuthPlugin from "../AuthPlugin";
 import { loanedBookData, collectionDataWithLoans } from "../utils";
+import DataFetcher from "../DataFetcher";
 
 export interface HeaderProps extends React.Props<{}> {
   collectionTitle: string | null;
@@ -100,6 +101,7 @@ export interface RootProps extends StateProps {
   closeErrorAndHideAuthForm?: () => void;
   setPreference: (key: string, value: string) => void;
   allLanguageSearch?: boolean;
+  fetcher?: DataFetcher;
 }
 
 export interface RootState {

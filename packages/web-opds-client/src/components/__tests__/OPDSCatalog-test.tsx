@@ -9,6 +9,7 @@ import { ReactReduxContext } from "react-redux";
 import OPDSCatalog from "../OPDSCatalog";
 import Root, { RootProps } from "../Root";
 import { mockRouterContext } from "../../__mocks__/routing";
+import DataFetcher from "../../DataFetcher";
 
 describe("OPDSCatalog", () => {
   let props = {
@@ -47,5 +48,26 @@ describe("OPDSCatalog", () => {
     Object.keys(props).forEach(key => {
       expect(root.props()[key]).to.equal(props[key]);
     });
+  });
+
+  it("passes custom DataFetcher to Root", () => {
+    const customFetcher = new DataFetcher();
+    const propsWithFetcher = {
+      ...props,
+      fetcher: customFetcher
+    };
+
+    let wrapper = shallow(<OPDSCatalog {...propsWithFetcher} />, {
+      context,
+      childContextTypes: {
+        router: PropTypes.object,
+        pathFor: PropTypes.func
+      }
+    });
+
+    const root = wrapper.dive().dive().dive().dive();
+
+    // Verify that the fetcher prop is passed to the Root component
+    expect(root.props().fetcher).to.equal(customFetcher);
   });
 });

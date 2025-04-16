@@ -32,6 +32,7 @@ _NOTE_: The web reader has been taken out of the demo server template for now as
   - `history`: an array of link objects (each with `url` and `text` properties) that is appended every time the user navigates to a new collection
 - `epubReaderUrlTemplate(epubUrl: string) => string`: optional function that returns a URL where you can read an EPUB file.
 - `allLanguageSearch`: optional string to specify if searches in the catalog should not use the browser's language header in requests. Default: `false`
+- `fetcher`: optional custom instance of `DataFetcher` to use for network requests. If not provided, a new instance will be created. Default: `undefined`
 
 ## React Component
 
@@ -63,6 +64,7 @@ For an example of the application in use as a React component, see [ThePalacePro
 - `authPlugins`: same as in "Standalone Config Options" above
 - `computeBreadcrumbs`: same as in "Standalone Config Options" above
 - `epubReaderUrlTemplate`: same as in "Standalone Config Options" above
+- `fetcher`: same as in "Standalone Config Options" above
 
 ### React Component Context
 

@@ -146,10 +146,12 @@ export function mergeRootProps(
   createDispatchProps,
   componentProps
 ) {
-  let fetcher = new DataFetcher({
-    proxyUrl: componentProps.proxyUrl,
-    adapter: adapter
-  });
+  let fetcher =
+    componentProps.fetcher ||
+    new DataFetcher({
+      proxyUrl: componentProps.proxyUrl,
+      adapter: adapter
+    });
   let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
   let authCredentials = fetcher.getAuthCredentials();
 
