@@ -6,6 +6,7 @@ import Root from "./Root";
 import { State } from "../state";
 import AuthPlugin from "../AuthPlugin";
 import OPDSStore from "./context/StoreContext";
+import DataFetcher from "../DataFetcher";
 
 export interface OPDSCatalogProps {
   collectionUrl?: string;
@@ -15,6 +16,7 @@ export interface OPDSCatalogProps {
   proxyUrl?: string;
   initialState?: State;
   epubReaderUrlTemplate?: (epubUrl: string) => string;
+  fetcher?: DataFetcher;
 }
 
 /**

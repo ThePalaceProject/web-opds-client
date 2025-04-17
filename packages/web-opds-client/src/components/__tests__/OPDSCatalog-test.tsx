@@ -3,12 +3,13 @@ import { stub } from "sinon";
 
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 import { ReactReduxContext } from "react-redux";
 
 import OPDSCatalog from "../OPDSCatalog";
 import Root, { RootProps } from "../Root";
 import { mockRouterContext } from "../../__mocks__/routing";
+import DataFetcher from "../../DataFetcher";
 
 describe("OPDSCatalog", () => {
   let props = {
@@ -47,5 +48,29 @@ describe("OPDSCatalog", () => {
     Object.keys(props).forEach(key => {
       expect(root.props()[key]).to.equal(props[key]);
     });
+  });
+
+  it("passes custom DataFetcher to Root", () => {
+    const customFetcher = new DataFetcher();
+    const propsWithFetcher = {
+      ...props,
+      fetcher: customFetcher
+    };
+
+    const wrapper = mount(<OPDSCatalog {...propsWithFetcher} />, {
+      context,
+      childContextTypes: {
+        router: PropTypes.object,
+        pathFor: PropTypes.func
+      }
+    });
+
+    const root = wrapper.find(Root);
+
+    // Verify that we found exactly one `Root` component.
+    expect(root).to.have.length(1);
+
+    // Verify that the fetcher prop is passed to the Root component
+    expect(root.props().fetcher).to.equal(customFetcher);
   });
 });

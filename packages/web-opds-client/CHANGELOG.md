@@ -1,5 +1,9 @@
 ## Changelog
 
+### v1.1.0
+
+- Add support for custom DataFetcher instances. The `OPDSCatalog` and `Root` components now accept an optional `fetcher` prop that allows passing in a custom `DataFetcher` instance for network requests.
+
 ### v1.0.1
 
 - Upgrade dependencies to support Node 18.
