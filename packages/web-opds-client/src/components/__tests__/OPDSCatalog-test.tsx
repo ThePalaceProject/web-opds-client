@@ -57,7 +57,7 @@ describe("OPDSCatalog", () => {
       fetcher: customFetcher
     };
 
-    let wrapper = shallow(<OPDSCatalog {...propsWithFetcher} />, {
+    const wrapper = mount(<OPDSCatalog {...propsWithFetcher} />, {
       context,
       childContextTypes: {
         router: PropTypes.object,
@@ -65,7 +65,10 @@ describe("OPDSCatalog", () => {
       }
     });
 
-    const root = wrapper.dive().dive().dive().dive();
+    const root = wrapper.find(Root);
+
+    // Verify that we found exactly one `Root` component.
+    expect(root).to.have.length(1);
 
     // Verify that the fetcher prop is passed to the Root component
     expect(root.props().fetcher).to.equal(customFetcher);
