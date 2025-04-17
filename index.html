@@ -47,6 +47,7 @@
 </li>
 <li><code>epubReaderUrlTemplate(epubUrl: string) =&gt; string</code>: optional function that returns a URL where you can read an EPUB file.</li>
 <li><code>allLanguageSearch</code>: optional string to specify if searches in the catalog should not use the browser&#39;s language header in requests. Default: <code>false</code></li>
+<li><code>fetcher</code>: optional custom instance of <code>DataFetcher</code> to use for network requests. If not provided, a new instance will be created. Default: <code>undefined</code></li>
 </ul>
 
 <a href="#react-component" id="react-component" style="color: inherit; text-decoration: none;">
@@ -69,6 +70,7 @@
 <li><code>authPlugins</code>: same as in &quot;Standalone Config Options&quot; above</li>
 <li><code>computeBreadcrumbs</code>: same as in &quot;Standalone Config Options&quot; above</li>
 <li><code>epubReaderUrlTemplate</code>: same as in &quot;Standalone Config Options&quot; above</li>
+<li><code>fetcher</code>: same as in &quot;Standalone Config Options&quot; above</li>
 </ul>
 
 <a href="#react-component-context" id="react-component-context" style="color: inherit; text-decoration: none;">
