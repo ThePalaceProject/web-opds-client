@@ -3,7 +3,7 @@ import { stub } from "sinon";
 
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 import { ReactReduxContext } from "react-redux";
 
 import OPDSCatalog from "../OPDSCatalog";
