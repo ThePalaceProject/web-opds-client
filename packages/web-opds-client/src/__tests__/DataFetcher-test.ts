@@ -17,9 +17,9 @@ describe("DataFetcher", () => {
     });
 
     it("uses fetch()", () => {
-      let options = {
+      let options: RequestInit = {
         method: "POST",
-        data: { test: "test" },
+        body: "test",
         credentials: "same-origin"
       };
       let fetcher = new DataFetcher({ adapter });
