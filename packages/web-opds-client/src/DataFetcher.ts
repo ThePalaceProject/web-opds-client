@@ -122,7 +122,7 @@ export default class DataFetcher {
     });
   }
 
-  fetch(url: string, options = {}) {
+  fetch(url: string, options: RequestInit = {}): Promise<Response> {
     options = Object.assign({ credentials: "same-origin" }, options);
 
     if (this.proxyUrl) {
