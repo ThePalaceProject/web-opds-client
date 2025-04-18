@@ -31,18 +31,17 @@ describe("OPDSCatalog", () => {
   let context = mockRouterContext();
 
   it("passes props to Root", () => {
-    let wrapper = shallow(<OPDSCatalog {...props} />, {
+    const wrapper = mount(<OPDSCatalog {...props} />, {
       context,
       childContextTypes: {
         router: PropTypes.object,
         pathFor: PropTypes.func
       }
     });
-    /**
-     * This is painfully fragile, but must be done to make
-     * enzyme render the child function beneath ReactReduxContext.Consumer
-     */
-    const root = wrapper.dive().dive().dive().dive();
+    const root = wrapper.find(Root);
+
+    // Verify that we found exactly one `Root` component.
+    expect(root).to.have.length(1);
 
     // test that all of the props we passed in are present there
     Object.keys(props).forEach(key => {
