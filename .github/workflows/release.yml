@@ -5,16 +5,20 @@ on:
   release:
     types: [published]
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   release:
     runs-on: ubuntu-latest
 
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Install Node.js 💻
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: 20
         registry-url: https://registry.npmjs.org/
@@ -30,7 +34,14 @@ jobs:
         TZ: America/New_York
       run: npm test
 
+    - name: Upgrade npm for OIDC support 📦
+      # Upgrade npm to support OIDC trusted publishing. Earlier steps run with the
+      # npm version bundled with current Node version to maintain consistency with
+      # the development environment. Only the Publish step requires the newer version.
+      # See https://docs.npmjs.com/trusted-publishers
+      # > Note: Trusted publishing requires npm CLI version 11.5.1 or later.
+      # TODO: This can be removed once we upgrade to Node 24 or greater.
+      run: npm install -g npm@^11.5.1
+
     - name: Publish 📚
       run: npm run release
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
