@@ -50,7 +50,7 @@ export default class BookCover extends React.Component<
     let authorFontSize = this.computeFontSize(authors?.join(", ") ?? "", 25);
 
     let hue = this.seededRandomHue(title);
-    let bgColor = `hsla(${hue}, 40%, 60%, 1)`;
+    let bgColor = `hsla(${hue}, 40%, 30%, 1)`;
 
     return (
       <div className="auto-book-cover" style={{ backgroundColor: bgColor }}>
