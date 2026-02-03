@@ -1,10 +1,8 @@
 const path = require("path");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
 var webpack = require("webpack");
 
 module.exports = {
   plugins: [
-    new CleanWebpackPlugin(),
     // jsdom is needed for server rendering, but causes errors
     // in the browser even if it is never used, so we ignore it:
     new webpack.IgnorePlugin({ resourceRegExp: /jsdom$/ }),
@@ -14,7 +12,9 @@ module.exports = {
       "process.env.TEST_AXE": JSON.stringify(process.env.TEST_AXE)
     })
   ],
-
+  output: {
+    clean: true // replaces CleanWebpackPlugin()
+  },
   module: {
     rules: [
       {
