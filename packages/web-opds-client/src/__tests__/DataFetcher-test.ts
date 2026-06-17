@@ -3,6 +3,7 @@ import { stub } from "sinon";
 const fetchMock = require("fetch-mock");
 
 import DataFetcher from "../DataFetcher";
+import { NavigationFeed, AcquisitionFeed } from "opds-feed-parser";
 const Cookie = require("js-cookie");
 
 describe("DataFetcher", () => {
@@ -184,6 +185,93 @@ describe("DataFetcher", () => {
       });
 
       fetchMock.restore();
+    });
+  });
+
+  describe("applyDeclaredFeedType()", () => {
+    // A feed whose only entry has no acquisition link. The OPDS parser
+    // classifies this as a navigation feed — the situation that arises for a
+    // library with no patron authentication configured, where the Circulation
+    // Manager omits borrow links.
+    const feedParsedAsNavigation = `<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>http://example.com/feed</id>
+  <title>Test Feed</title>
+  <updated>2020-01-01T00:00:00Z</updated>
+  <entry>
+    <id>urn:test:1</id>
+    <title>Book One</title>
+    <updated>2020-01-01T00:00:00Z</updated>
+    <link href="http://example.com/image.jpg" rel="http://opds-spec.org/image/thumbnail" type="image/jpeg"/>
+  </entry>
+</feed>`;
+
+    // A feed whose only entry has an acquisition link. The OPDS parser
+    // classifies this as an acquisition feed.
+    const feedParsedAsAcquisition = `<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>http://example.com/feed</id>
+  <title>Test Feed</title>
+  <updated>2020-01-01T00:00:00Z</updated>
+  <entry>
+    <id>urn:test:1</id>
+    <title>Book One</title>
+    <updated>2020-01-01T00:00:00Z</updated>
+    <link href="http://example.com/borrow" rel="http://opds-spec.org/acquisition/borrow" type="application/atom+xml;type=entry;profile=opds-catalog"/>
+  </entry>
+</feed>`;
+
+    const feedTypeAdapter = data =>
+      data instanceof AcquisitionFeed
+        ? "acquisition"
+        : data instanceof NavigationFeed
+        ? "navigation"
+        : "other";
+
+    const fetchFeedType = async (body, contentType) => {
+      fetchMock.mock("test-url", {
+        status: 200,
+        body,
+        headers: contentType ? { "Content-Type": contentType } : {}
+      });
+      let fetcher = new DataFetcher({ adapter: feedTypeAdapter });
+      return fetcher.fetchOPDSData("test-url");
+    };
+
+    afterEach(() => {
+      fetchMock.restore();
+    });
+
+    it("uses the acquisition feed type when the content type declares kind=acquisition", async () => {
+      const result = await fetchFeedType(
+        feedParsedAsNavigation,
+        "application/atom+xml;profile=opds-catalog;kind=acquisition"
+      );
+      expect(result).to.equal("acquisition");
+    });
+
+    it("uses the navigation feed type when the content type declares kind=navigation", async () => {
+      const result = await fetchFeedType(
+        feedParsedAsAcquisition,
+        "application/atom+xml;profile=opds-catalog;kind=navigation"
+      );
+      expect(result).to.equal("navigation");
+    });
+
+    it("falls back to the parser's navigation classification when no kind is declared", async () => {
+      const result = await fetchFeedType(
+        feedParsedAsNavigation,
+        "application/atom+xml"
+      );
+      expect(result).to.equal("navigation");
+    });
+
+    it("falls back to the parser's acquisition classification when no kind is declared", async () => {
+      const result = await fetchFeedType(
+        feedParsedAsAcquisition,
+        "application/atom+xml"
+      );
+      expect(result).to.equal("acquisition");
     });
   });
 });

@@ -1,4 +1,9 @@
-import OPDSParser, { OPDSFeed, OPDSEntry } from "opds-feed-parser";
+import OPDSParser, {
+  OPDSFeed,
+  OPDSEntry,
+  NavigationFeed,
+  AcquisitionFeed
+} from "opds-feed-parser";
 import OpenSearchDescriptionParser from "./OpenSearchDescriptionParser";
 import { AuthCredentials } from "./interfaces";
 const Cookie = require("js-cookie");
@@ -66,7 +71,12 @@ export default class DataFetcher {
               parser
                 .parse(text)
                 .then((parsedData: OPDSFeed | OPDSEntry) => {
-                  resolve(this.adapter?.(parsedData, url));
+                  resolve(
+                    this.adapter?.(
+                      this.applyDeclaredFeedType(parsedData, response),
+                      url
+                    )
+                  );
                 })
                 .catch(err => {
                   reject({
@@ -87,6 +97,47 @@ export default class DataFetcher {
         })
         .catch(error => reject(error));
     });
+  }
+
+  /**
+   * Determine a feed's type from the `kind` the server declares in the response
+   * content type (`kind=acquisition` or `kind=navigation`) rather than from
+   * opds-feed-parser's structural guess.
+   *
+   * The parser only sees the feed body, so it classifies a document as an
+   * acquisition feed when *every* entry has an acquisition link and otherwise
+   * falls back to a navigation feed. That heuristic misfires for valid
+   * acquisition feeds whose entries legitimately have no acquisition links — for
+   * instance a library with no patron authentication, where the Circulation
+   * Manager omits borrow links — so their books would render as navigation links
+   * instead of books with cover images.
+   *
+   * The content type is the authoritative, spec-defined source of the feed kind,
+   * so we trust it when present and fall back to the parser's classification only
+   * when no kind is declared. NavigationFeed and AcquisitionFeed share the same
+   * shape, so re-wrapping only changes the type the adapter keys off of.
+   */
+  applyDeclaredFeedType(
+    parsedData: OPDSFeed | OPDSEntry,
+    response: Response
+  ): OPDSFeed | OPDSEntry {
+    // Only feeds have a kind; entry documents are returned unchanged.
+    if (!(parsedData instanceof OPDSFeed)) {
+      return parsedData;
+    }
+
+    const contentType = response.headers.get("content-type") ?? "";
+    const kind = /kind=(acquisition|navigation)/i
+      .exec(contentType)?.[1]
+      ?.toLowerCase();
+
+    if (kind === "acquisition" && !(parsedData instanceof AcquisitionFeed)) {
+      return new AcquisitionFeed({ ...parsedData });
+    }
+    if (kind === "navigation" && !(parsedData instanceof NavigationFeed)) {
+      return new NavigationFeed({ ...parsedData });
+    }
+    return parsedData;
   }
 
   fetchSearchDescriptionData(searchDescriptionUrl: string) {
