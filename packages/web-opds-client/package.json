@@ -27,6 +27,7 @@
     "buffer": "^6.0.3",
     "dompurify": "3.2.4",
     "downloadjs": "^1.4.4",
+    "fast-content-type-parse": "^3.0.0",
     "font-awesome": "^4.7.0",
     "isomorphic-fetch": "^3.0.0",
     "js-cookie": "^2.1.2",
