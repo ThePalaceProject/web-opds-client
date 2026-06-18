@@ -128,10 +128,6 @@ export default class DataFetcher {
     }
 
     const header = response.headers.get("content-type") ?? "";
-    // safeParse handles RFC quoting, whitespace, and case-insensitive
-    // parameter names, and never throws — it returns an empty result for a
-    // missing or malformed header, so `kind` is simply undefined when no
-    // kind is declared.
     const kind = safeParse(header).parameters.kind?.toLowerCase();
 
     if (kind === "acquisition" && !(parsedData instanceof AcquisitionFeed)) {
