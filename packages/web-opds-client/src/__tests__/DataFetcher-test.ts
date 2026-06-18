@@ -273,5 +273,39 @@ describe("DataFetcher", () => {
       );
       expect(result).to.equal("acquisition");
     });
+
+    it("falls back to the parser's navigation classification when there is no Content-Type header", async () => {
+      const result = await fetchFeedType(feedParsedAsNavigation, undefined);
+      expect(result).to.equal("navigation");
+    });
+
+    it("falls back to the parser's acquisition classification when there is no Content-Type header", async () => {
+      const result = await fetchFeedType(feedParsedAsAcquisition, undefined);
+      expect(result).to.equal("acquisition");
+    });
+
+    it("reads the declared kind from a quoted, differently-cased parameter", async () => {
+      const result = await fetchFeedType(
+        feedParsedAsNavigation,
+        'application/atom+xml; profile=opds-catalog; KIND="acquisition"'
+      );
+      expect(result).to.equal("acquisition");
+    });
+
+    it("ignores a kind= substring buried in another parameter's value", async () => {
+      const result = await fetchFeedType(
+        feedParsedAsNavigation,
+        'application/atom+xml; profile=";kind=acquisition"'
+      );
+      expect(result).to.equal("navigation");
+    });
+
+    it("falls back to the parser's classification when the Content-Type is malformed", async () => {
+      const result = await fetchFeedType(
+        feedParsedAsAcquisition,
+        "not-a-valid-content-type"
+      );
+      expect(result).to.equal("acquisition");
+    });
   });
 });

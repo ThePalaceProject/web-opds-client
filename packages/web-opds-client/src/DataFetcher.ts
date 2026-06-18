@@ -6,6 +6,7 @@ import OPDSParser, {
 } from "opds-feed-parser";
 import OpenSearchDescriptionParser from "./OpenSearchDescriptionParser";
 import { AuthCredentials } from "./interfaces";
+import { safeParse } from "fast-content-type-parse";
 const Cookie = require("js-cookie");
 require("isomorphic-fetch");
 
@@ -126,10 +127,12 @@ export default class DataFetcher {
       return parsedData;
     }
 
-    const contentType = response.headers.get("content-type") ?? "";
-    const kind = /kind=(acquisition|navigation)/i
-      .exec(contentType)?.[1]
-      ?.toLowerCase();
+    const header = response.headers.get("content-type") ?? "";
+    // safeParse handles RFC quoting, whitespace, and case-insensitive
+    // parameter names, and never throws — it returns an empty result for a
+    // missing or malformed header, so `kind` is simply undefined when no
+    // kind is declared.
+    const kind = safeParse(header).parameters.kind?.toLowerCase();
 
     if (kind === "acquisition" && !(parsedData instanceof AcquisitionFeed)) {
       return new AcquisitionFeed({ ...parsedData });
