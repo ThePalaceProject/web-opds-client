@@ -17,9 +17,11 @@ import {
   LaneData,
   BookData,
   LinkData,
+  FacetData,
   FacetGroupData,
   SearchData,
-  FulfillmentLink
+  FulfillmentLink,
+  MediaType
 } from "./interfaces";
 
 let sanitizeHtml;
@@ -133,7 +135,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
       }
       return {
         url: link.href,
-        type: link.type,
+        type: link.type as MediaType,
         indirectType
       };
     });
@@ -155,7 +157,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
       }
       return {
         url: link.href,
-        type: link.type,
+        type: link.type as MediaType,
         indirectType
       };
     });
@@ -247,7 +249,10 @@ function formatDate(inputDate: string): string {
   return `${month} ${day}, ${year}`;
 }
 
-function OPDSLinkToLinkData(feedUrl, link: OPDSLink = null): LinkData | null {
+function OPDSLinkToLinkData(
+  feedUrl,
+  link: OPDSLink | null = null
+): LinkData | null {
   if (!link || !link.href) {
     return null;
   }
@@ -279,16 +284,16 @@ export function feedToCollection(
   let facetGroups: FacetGroupData[] = [];
   let search: SearchData | undefined = undefined;
   let nextPageUrl: string | undefined = undefined;
-  let catalogRootLink: OPDSLink;
-  let parentLink: OPDSLink;
+  let catalogRootLink: OPDSLink | null = null;
+  let parentLink: OPDSLink | null = null;
   let shelfUrl: string | undefined = undefined;
   let links: OPDSLink[] = [];
 
   feed.entries.forEach(entry => {
     if (feed instanceof AcquisitionFeed) {
       let book = entryToBook(entry, feedUrl);
-      const collectionLink: OPDSCollectionLink = entry.links.find(
-        link => link instanceof OPDSCollectionLink
+      const collectionLink = entry.links.find(
+        (link): link is OPDSCollectionLink => link instanceof OPDSCollectionLink
       );
       if (collectionLink) {
         let { title, href } = collectionLink;
@@ -322,9 +327,9 @@ export function feedToCollection(
 
   let facetLinks: OPDSFacetLink[] = [];
   if (feed.links) {
-    facetLinks = feed.links.filter(link => {
-      return link instanceof OPDSFacetLink;
-    });
+    facetLinks = feed.links.filter(
+      (link): link is OPDSFacetLink => link instanceof OPDSFacetLink
+    );
 
     let searchLink = feed.links.find(link => {
       return link instanceof SearchLink;
@@ -340,11 +345,10 @@ export function feedToCollection(
       nextPageUrl = nextPageLink.href;
     }
 
-    catalogRootLink = feed.links.find(link => {
-      return link instanceof OPDSCatalogRootLink;
-    });
+    catalogRootLink =
+      feed.links.find(link => link instanceof OPDSCatalogRootLink) ?? null;
 
-    parentLink = feed.links.find(link => link.rel === "up");
+    parentLink = feed.links.find(link => link.rel === "up") ?? null;
 
     let shelfLink = feed.links.find(link => link instanceof OPDSShelfLink);
     if (shelfLink) {
@@ -354,13 +358,13 @@ export function feedToCollection(
     links = feed.links;
   }
 
-  facetGroups = facetLinks.reduce((result, link) => {
+  facetGroups = facetLinks.reduce<FacetGroupData[]>((result, link) => {
     let groupLabel = link.facetGroup;
     let label = link.title;
     let href = link.href;
     let active = link.activeFacet;
-    let facet = { label, href, active };
-    let newResult: any[] = [];
+    let facet: FacetData = { label, href, active };
+    let newResult: FacetGroupData[] = [];
     let foundGroup = false;
     result.forEach(group => {
       if (group.label === groupLabel) {
