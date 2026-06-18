@@ -292,8 +292,8 @@ export function feedToCollection(
   feed.entries.forEach(entry => {
     if (feed instanceof AcquisitionFeed) {
       let book = entryToBook(entry, feedUrl);
-      const collectionLink = <OPDSCollectionLink>(
-        entry.links.find(link => link instanceof OPDSCollectionLink)
+      const collectionLink = entry.links.find(
+        (link): link is OPDSCollectionLink => link instanceof OPDSCollectionLink
       );
       if (collectionLink) {
         let { title, href } = collectionLink;
